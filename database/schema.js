@@ -13,14 +13,15 @@ exports.userTable = sqliteTable("users", {
 
 exports.issueTable = sqliteTable("issues", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  title: text("title").notNull(),
+  classification: text("classification").notNull(),
   description: text("description").notNull(),
+  city: text("city"),
   status: text("status").notNull().default("open"),
   priority: text("priority").notNull().default("normal"),
   imageUrl: text("image_url").notNull().default(""),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => exports.userTable.id),
+  // userId: integer("user_id")
+  //   .notNull()
+  //   .references(() => exports.userTable.id),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });

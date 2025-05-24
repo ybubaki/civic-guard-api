@@ -8,4 +8,6 @@ node_modules/
 migrations/
 migration/
 
+test/
+
 .env
