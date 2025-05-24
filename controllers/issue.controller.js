@@ -31,10 +31,13 @@ const createIssue = async (req, res) => {
   try {
     const classification = await issueClassifier(description);
 
+    const { category, priority } = JSON.parse(classification);
+
     const issue = await db.insert(issueTable).values({
       city,
       description,
-      classification,
+      classification: category,
+      priority,
       imageUrl: "/uploads/" + req.file.filename,
     });
 

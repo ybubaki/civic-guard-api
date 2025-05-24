@@ -1,4 +1,4 @@
-const { GoogleGenAI } = require("@google/genai");
+const { GoogleGenAI, Type } = require("@google/genai");
 
 const issueClassifier = async (description) => {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -7,7 +7,20 @@ const issueClassifier = async (description) => {
     contents: "" + description,
     config: {
       systemInstruction:
-        "You are an advance text classifier. Classify what ever you are giving into one of the following categories: 'Damaged Road', 'Flood', 'Homeless People', 'Broken Streetlights', 'Overflowing Community Dump'.",
+        "You are an advance text classifier. Classify what ever you are giving into one of the following categories: 'Damaged Road', 'Flood', 'Homeless People', 'Broken Streetlights', 'Overflowing Community Dump'. Also from the text you are given, assign a priority to the issue. The priority can be 'high', 'medium', or 'low'.",
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          category: {
+            type: Type.STRING,
+          },
+          priority: {
+            type: Type.STRING,
+          },
+        },
+        propertyOrdering: ["category", "priority"],
+      },
     },
   });
 
