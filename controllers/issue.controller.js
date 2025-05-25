@@ -55,6 +55,22 @@ const createIssue = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves all issues from the database.
+ *
+ * @function getIssues
+ * @param {Express.Request} req - The Express request object.
+ * @param {Express.Response} res - The Express response object.
+ *
+ * @returns {Promise<Express.Response>} The response object.
+ *
+ * @throws {Error} If there's an error while retrieving the issues.
+ *
+ * @example
+ * const { getIssues } = require("../controllers/issue.controller");
+ *
+ * getIssues(req, res);
+ */
 const getIssues = async (req, res) => {
   try {
     const issues = await db.query.issueTable.findMany();
@@ -71,6 +87,22 @@ const getIssues = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves an issue by its ID from the database.
+ *
+ * @function getIssueById
+ * @param {Express.Request} req - The Express request object.
+ * @param {Express.Response} res - The Express response object.
+ *
+ * @returns {Promise<Express.Response>} The response object.
+ *
+ * @throws {Error} If there's an error while retrieving the issue.
+ *
+ * @example
+ * const { getIssueById } = require("../controllers/issue.controller");
+ *
+ * getIssueById(req, res);
+ */
 const getIssueById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -90,6 +122,22 @@ const getIssueById = async (req, res) => {
   }
 };
 
+/**
+ * Updates an issue by its ID in the database.
+ *
+ * @function updateIssue
+ * @param {Express.Request} req - The Express request object.
+ * @param {Express.Response} res - The Express response object.
+ *
+ * @returns {Promise<Express.Response>} The response object.
+ *
+ * @throws {Error} If there's an error while updating the issue.
+ *
+ * @example
+ * const { updateIssue } = require("../controllers/issue.controller");
+ *
+ * updateIssue(req, res);
+ */
 const updateIssue = async (req, res) => {
   try {
     const { id } = req.params;
@@ -119,6 +167,22 @@ const updateIssue = async (req, res) => {
   }
 };
 
+/**
+ * Deletes an issue by its ID from the database.
+ *
+ * @function deleteIssue
+ * @param {Express.Request} req - The Express request object.
+ * @param {Express.Response} res - The Express response object.
+ *
+ * @returns {Promise<Express.Response>} The response object.
+ *
+ * @throws {Error} If there's an error while deleting the issue.
+ *
+ * @example
+ * const { deleteIssue } = require("../controllers/issue.controller");
+ *
+ * deleteIssue(req, res);
+ */
 const deleteIssue = async (req, res) => {
   try {
     const { id } = req.params;
