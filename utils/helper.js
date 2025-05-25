@@ -1,19 +1,32 @@
-const multer = require("multer");
+const jwt = require("jsonwebtoken");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix =
-      Date.now() + "-" + "issue" + "-" + Math.round(Math.random() * 1e9);
-    const extension = file.originalname.split(".").pop();
-    cb(null, file.fieldname + "-" + uniqueSuffix + "." + extension);
-  },
-});
+const generateToken = (user) => {
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
+};
 
-const upload = multer({ storage: storage });
+const verifyToken = (token) => {
+  if (!token) {
+    return null;
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  } catch (error) {
+    return null;
+  }
+};
 
 module.exports = {
-  upload,
+  generateToken,
+  verifyToken,
 };

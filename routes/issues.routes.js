@@ -11,7 +11,7 @@ const {
   createIssueSchema,
   updateIssueSchema,
 } = require("../schemas/issue.schema");
-const { upload } = require("../utils/helper");
+const { upload } = require("../utils/multer");
 
 const router = express.Router();
 
