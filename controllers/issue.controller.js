@@ -1,3 +1,4 @@
+const { eq } = require("drizzle-orm");
 const { issueClassifier } = require("../utils/ai");
 const db = require("../database");
 const { issueTable } = require("../database/schema");
@@ -54,6 +55,93 @@ const createIssue = async (req, res) => {
   }
 };
 
+const getIssues = async (req, res) => {
+  try {
+    const issues = await db.query.issueTable.findMany();
+    return res.json({
+      data: issues,
+      message: "Issues fetched successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal error while fetching issues. Please try again.",
+    });
+  }
+};
+
+const getIssueById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const issue = await db.query.issueTable.findFirst({
+      where: eq(issueTable.id, parseInt(id)),
+    });
+    return res.json({
+      data: issue,
+      message: "Issue fetched successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal error while fetching issue. Please try again.",
+    });
+  }
+};
+
+const updateIssue = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (req.body.description) {
+      const classification = await issueClassifier(req.body.description);
+      const { category, priority } = JSON.parse(classification);
+      req.body.classification = category;
+      req.body.priority = priority;
+    }
+    const issue = await db
+      .update(issueTable)
+      .set({
+        ...req.body,
+      })
+      .where(eq(issueTable.id, parseInt(id)));
+
+    return res.json({
+      data: issue,
+      message: "Issue updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal error while updating issue. Please try again.",
+    });
+  }
+};
+
+const deleteIssue = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const issue = await db
+      .delete(issueTable)
+      .where(eq(issueTable.id, parseInt(id)));
+    return res.json({
+      data: issue,
+      message: "Issue deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal error while deleting issue. Please try again.",
+    });
+  }
+};
+
 module.exports = {
   createIssue,
+  getIssues,
+  getIssueById,
+  updateIssue,
+  deleteIssue,
 };

@@ -7,6 +7,15 @@ const createIssueSchema = z.object({
   }),
 });
 
+const updateIssueSchema = z.object({
+  body: z.object({
+    description: z.string().optional(),
+    city: z.string().optional(),
+    status: z.string().optional(),
+  }),
+});
+
 module.exports = {
   createIssueSchema,
+  updateIssueSchema,
 };
