@@ -40,6 +40,7 @@ const createIssue = async (req, res) => {
       classification: category,
       priority,
       imageUrl: "/uploads/" + req.file.filename,
+      userId: req.user.id,
     });
 
     return res.json({

@@ -20,9 +20,9 @@ exports.issueTable = sqliteTable("issues", {
   status: text("status").notNull().default("open"),
   priority: text("priority").notNull().default("normal"),
   imageUrl: text("image_url").notNull().default(""),
-  // userId: integer("user_id")
-  //   .notNull()
-  //   .references(() => exports.userTable.id),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => exports.userTable.id),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
