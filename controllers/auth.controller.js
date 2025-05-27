@@ -60,6 +60,13 @@ const loginUser = async (req, res) => {
     return res.json({
       data: {
         access_token: token,
+        user: {
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          id: user.id,
+          name: user.name,
+        },
       },
       message: "User logged in successfully",
     });

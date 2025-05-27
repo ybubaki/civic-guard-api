@@ -4,6 +4,7 @@ const {
   createIssue,
   getIssues,
   getIssueById,
+  getIssuesByUser,
   updateIssue,
   deleteIssue,
 } = require("../controllers/issue.controller");
@@ -23,6 +24,8 @@ router.post(
 );
 
 router.get("/", getIssues);
+
+router.get("/user", getIssuesByUser);
 
 router.get("/:id", getIssueById);
 

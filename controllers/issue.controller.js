@@ -74,7 +74,44 @@ const createIssue = async (req, res) => {
  */
 const getIssues = async (req, res) => {
   try {
-    const issues = await db.query.issueTable.findMany();
+    const issues = await db.query.issueTable.findMany({
+      orderBy: (issueTable, { desc }) => [desc(issueTable.createdAt)],
+    });
+    return res.json({
+      data: issues,
+      message: "Issues fetched successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal error while fetching issues. Please try again.",
+    });
+  }
+};
+
+/**
+ * Retrieves all issues created by the user from the database.
+ *
+ * @function getIssuesByUser
+ * @param {Express.Request} req - The Express request object.
+ * @param {Express.Response} res - The Express response object.
+ *
+ * @returns {Promise<Express.Response>} The response object.
+ *
+ * @throws {Error} If there's an error while retrieving the issues.
+ *
+ * @example
+ * const { getIssuesByUser } = require("../controllers/issue.controller");
+ *
+ * getIssuesByUser(req, res);
+ */
+const getIssuesByUser = async (req, res) => {
+  try {
+    const issues = await db.query.issueTable.findMany({
+      where: eq(issueTable.userId, req.user.id),
+      orderBy: (issueTable, { desc }) => [desc(issueTable.createdAt)],
+    });
     return res.json({
       data: issues,
       message: "Issues fetched successfully",
@@ -207,6 +244,7 @@ module.exports = {
   createIssue,
   getIssues,
   getIssueById,
+  getIssuesByUser,
   updateIssue,
   deleteIssue,
 };
