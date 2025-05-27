@@ -7,7 +7,7 @@ const issueClassifier = async (description) => {
     contents: "" + description,
     config: {
       systemInstruction:
-        "You are an advance text classifier. Classify what ever you are giving into one of the following categories: 'Damaged Road', 'Flood', 'Homeless People', 'Broken Streetlights', 'Overflowing Community Dump'. Also from the text you are given, assign a priority to the issue. The priority can be 'high', 'medium', or 'low'.",
+        "You are an advance text classifier and title generator. Classify what ever you are giving into one of the following categories: 'Damaged Road', 'Flood', 'Homeless People', 'Broken Streetlights', 'Overflowing Community Dump'. Also from the text you are given, assign a priority to the issue. The priority can be 'high', 'medium', or 'low'. Also generate a title for the issue.",
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
@@ -18,8 +18,11 @@ const issueClassifier = async (description) => {
           priority: {
             type: Type.STRING,
           },
+          title: {
+            type: Type.STRING,
+          },
         },
-        propertyOrdering: ["category", "priority"],
+        propertyOrdering: ["category", "priority", "title"],
       },
     },
   });

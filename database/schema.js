@@ -14,7 +14,8 @@ exports.userTable = sqliteTable("users", {
 
 exports.issueTable = sqliteTable("issues", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  classification: text("classification").notNull(),
+  title: text("title"),
+  category: text("category").notNull(),
   description: text("description").notNull(),
   city: text("city"),
   status: text("status").notNull().default("open"),
