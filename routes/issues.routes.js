@@ -7,6 +7,7 @@ const {
   getIssuesByUser,
   updateIssue,
   deleteIssue,
+  searchIssues,
 } = require("../controllers/issue.controller");
 const {
   createIssueSchema,
@@ -26,6 +27,8 @@ router.post(
 router.get("/", getIssues);
 
 router.get("/user", getIssuesByUser);
+
+router.get("/search", searchIssues);
 
 router.get("/:id", getIssueById);
 

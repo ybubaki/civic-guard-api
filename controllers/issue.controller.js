@@ -1,4 +1,4 @@
-const { eq } = require("drizzle-orm");
+const { eq, or, like, desc } = require("drizzle-orm");
 const { issueClassifier } = require("../utils/ai");
 const db = require("../database");
 const { issueTable } = require("../database/schema");
@@ -207,6 +207,55 @@ const updateIssue = async (req, res) => {
 };
 
 /**
+ * Searches for issues in the database.
+ *
+ * @function searchIssues
+ * @param {Express.Request} req - The Express request object.
+ * @param {Express.Response} res - The Express response object.
+ *
+ * @returns {Promise<Express.Response>} The response object.
+ *
+ * @throws {Error} If there's an error while searching for the issues.
+ *
+ * @example
+ * const { searchIssues } = require("../controllers/issue.controller");
+ *
+ * searchIssues(req, res);
+ */
+const searchIssues = async (req, res) => {
+  try {
+    const { search } = req.query;
+    console.log("search", search);
+
+    let whereClause = undefined;
+    if (search && search != "") {
+      whereClause = or(
+        like(issueTable.title, `%${search}%`),
+        like(issueTable.description, `%${search}%`),
+        like(issueTable.category, `%${search}%`),
+        like(issueTable.priority, `%${search}%`)
+      );
+    }
+    const issues = await db
+      .select()
+      .from(issueTable)
+      .where(whereClause)
+      .orderBy(desc(issueTable.createdAt));
+
+    return res.json({
+      data: issues,
+      message: "Issues fetched successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal error while fetching issues. Please try again.",
+    });
+  }
+};
+
+/**
  * Deletes an issue by its ID from the database.
  *
  * @function deleteIssue
@@ -248,4 +297,5 @@ module.exports = {
   getIssuesByUser,
   updateIssue,
   deleteIssue,
+  searchIssues,
 };

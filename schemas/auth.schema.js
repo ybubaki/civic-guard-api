@@ -9,6 +9,14 @@ const registerSchema = z.object({
   }),
 });
 
+const updateSchema = z.object({
+  body: z.object({
+    name: z.string().min(3, "Name must be at least 3 characters long"),
+    username: z.string().min(3, "Username must be at least 3 characters long"),
+    email: z.string().email("Invalid email address"),
+  }),
+});
+
 const loginSchema = z.object({
   body: z.object({
     email: z.string().email("Invalid email address"),
@@ -16,7 +24,20 @@ const loginSchema = z.object({
   }),
 });
 
+const changePasswordSchema = z.object({
+  body: z.object({
+    currentPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters long"),
+    newPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters long"),
+  }),
+});
+
 module.exports = {
   registerSchema,
+  updateSchema,
   loginSchema,
+  changePasswordSchema,
 };
