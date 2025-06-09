@@ -30,6 +30,18 @@ const issueClassifier = async (description) => {
   return response.text;
 };
 
+const chatAI = async (message, config) => {
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: message,
+    config,
+  });
+
+  return response.text;
+};
+
 module.exports = {
   issueClassifier,
+  chatAI,
 };
