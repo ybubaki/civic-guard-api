@@ -20,7 +20,7 @@ const { issueTable } = require("../database/schema");
  * createIssue(req, res);
  */
 const createIssue = async (req, res) => {
-  const { description, city } = req.body;
+  const { description, city, latitude, longitude } = req.body;
 
   if (!req.file) {
     return res.status(400).json({
@@ -42,6 +42,8 @@ const createIssue = async (req, res) => {
       priority,
       imageUrl: "/uploads/" + req.file.filename,
       userId: req.user.id,
+      latitude,
+      longitude,
     });
 
     return res.json({

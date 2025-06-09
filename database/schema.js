@@ -18,6 +18,8 @@ exports.issueTable = sqliteTable("issues", {
   category: text("category").notNull(),
   description: text("description").notNull(),
   city: text("city"),
+  latitude: text("latitude"),
+  longitude: text("longitude"),
   status: text("status").notNull().default("open"),
   priority: text("priority").notNull().default("normal"),
   imageUrl: text("image_url").notNull().default(""),
