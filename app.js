@@ -1,10 +1,12 @@
 const express = require("express");
 const path = require("path");
 const routes = require("./routes/index");
-
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+
+app.use(cors({ origin: "*" }));
 
 // Serve files from the uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

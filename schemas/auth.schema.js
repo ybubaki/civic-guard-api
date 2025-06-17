@@ -35,9 +35,27 @@ const changePasswordSchema = z.object({
   }),
 });
 
+const forgotPasswordSchema = z.object({
+  body: z.object({
+    email: z.string().email("Invalid email address"),
+    otp: z.string().min(4, "Otp must be at least 4 characters long"),
+    newPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters long"),
+  }),
+});
+
+const sendOtpSchema = z.object({
+  body: z.object({
+    email: z.string().email("Invalid email address"),
+  }),
+});
+
 module.exports = {
   registerSchema,
   updateSchema,
   loginSchema,
   changePasswordSchema,
+  forgotPasswordSchema,
+  sendOtpSchema,
 };

@@ -29,3 +29,13 @@ exports.issueTable = sqliteTable("issues", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+exports.otpTable = sqliteTable("otps", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  otp: text("otp").notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => exports.userTable.id),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});

@@ -14,11 +14,13 @@
     "@google/genai": "^1.0.1",
     "argon2": "^0.43.0",
     "better-sqlite3": "^11.10.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.0",
+    "nodemailer": "^7.0.3",
     "zod": "^3.25.28"
   },
   "devDependencies": {

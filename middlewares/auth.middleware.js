@@ -29,6 +29,17 @@ const authMiddleware = (req, res, next) => {
   next();
 };
 
+const adminMiddleware = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(401).json({
+      data: null,
+      message: "Unauthorized",
+    });
+  }
+  next();
+};
+
 module.exports = {
   authMiddleware,
+  adminMiddleware,
 };
