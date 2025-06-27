@@ -1,5 +1,5 @@
 const { sqliteTable, text, integer } = require("drizzle-orm/sqlite-core");
-const { sql } = require("drizzle-orm");
+const { sql, relations } = require("drizzle-orm");
 
 exports.userTable = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -11,6 +11,10 @@ exports.userTable = sqliteTable("users", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+exports.usersRelations = relations(exports.userTable, ({ many }) => ({
+  reports: many(exports.issueTable),
+}));
 
 exports.issueTable = sqliteTable("issues", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -29,6 +33,13 @@ exports.issueTable = sqliteTable("issues", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+exports.issueRelations = relations(exports.issueTable, ({ one }) => ({
+  author: one(exports.userTable, {
+    fields: [exports.issueTable.userId],
+    references: [exports.userTable.id],
+  }),
+}));
 
 exports.otpTable = sqliteTable("otps", {
   id: integer("id").primaryKey({ autoIncrement: true }),

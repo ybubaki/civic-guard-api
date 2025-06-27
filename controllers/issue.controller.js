@@ -227,7 +227,6 @@ const updateIssue = async (req, res) => {
 const searchIssues = async (req, res) => {
   try {
     const { search } = req.query;
-    console.log("search", search);
 
     let whereClause = undefined;
     if (search && search != "") {
