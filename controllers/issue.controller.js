@@ -30,9 +30,20 @@ const createIssue = async (req, res) => {
   }
 
   try {
-    const classification = await issueClassifier(description);
+    const classification = await issueClassifier(description, req.file);
 
-    const { title, category, priority } = JSON.parse(classification);
+    console.log(classification);
+
+    const { title, category, priority, conclusion } =
+      JSON.parse(classification);
+
+    if (!conclusion) {
+      return res.status(400).json({
+        data: null,
+        message:
+          "Image or text is not aligned to the description or any of the categories.",
+      });
+    }
 
     const issue = await db.insert(issueTable).values({
       city,
