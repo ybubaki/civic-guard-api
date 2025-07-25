@@ -1,4 +1,4 @@
-const { eq, or, like, desc } = require("drizzle-orm");
+const { eq, or, like, desc, sql } = require("drizzle-orm");
 const { issueClassifier } = require("../utils/ai");
 const db = require("../database");
 const { issueTable } = require("../database/schema");
@@ -32,8 +32,6 @@ const createIssue = async (req, res) => {
   try {
     const classification = await issueClassifier(description, req.file);
 
-    console.log(classification);
-
     const { title, category, priority, conclusion } =
       JSON.parse(classification);
 
@@ -42,6 +40,33 @@ const createIssue = async (req, res) => {
         data: null,
         message:
           "Image or text is not aligned to the description or any of the categories.",
+      });
+    }
+
+    const radiusInMeters = 5;
+    const earthRadius = 6371000; // Earth radius in meters
+
+    const nearbyIssues = await db
+      .select()
+      .from(issueTable)
+      .where(
+        sql`
+    ${earthRadius} * 2 * ASIN(
+      SQRT(
+        POWER(SIN(RADIANS((${latitude} - issueTable.latitude) / 2)), 2) +
+        COS(RADIANS(${latitude})) * COS(RADIANS(issueTable.latitude)) *
+        POWER(SIN(RADIANS((${longitude} - issueTable.longitude) / 2)), 2)
+      )
+    ) < ${radiusInMeters}
+  `
+      )
+      .where(eq(issueTable.category, category))
+      .where(eq(issueTable.city, city));
+
+    if (nearbyIssues.length > 0) {
+      return res.status(400).json({
+        data: null,
+        message: "This issue has already been reported.",
       });
     }
 
