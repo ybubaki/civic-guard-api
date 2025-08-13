@@ -14,10 +14,6 @@ exports.userTable = sqliteTable("users", {
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
-exports.usersRelations = relations(exports.userTable, ({ many }) => ({
-  reports: many(exports.issueTable),
-}));
-
 exports.issueTable = sqliteTable("issues", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title"),
@@ -35,6 +31,10 @@ exports.issueTable = sqliteTable("issues", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+exports.usersRelations = relations(exports.userTable, ({ many }) => ({
+  reports: many(exports.issueTable),
+}));
 
 exports.issueRelations = relations(exports.issueTable, ({ one }) => ({
   author: one(exports.userTable, {

@@ -115,6 +115,9 @@ const getIssues = async (req, res) => {
   try {
     const issues = await db.query.issueTable.findMany({
       orderBy: (issueTable, { desc }) => [desc(issueTable.createdAt)],
+      with: {
+        author: true,
+      },
     });
     return res.json({
       data: issues,
@@ -150,6 +153,9 @@ const getIssuesByUser = async (req, res) => {
     const issues = await db.query.issueTable.findMany({
       where: eq(issueTable.userId, req.user.id),
       orderBy: (issueTable, { desc }) => [desc(issueTable.createdAt)],
+      with: {
+        author: true,
+      },
     });
     return res.json({
       data: issues,
@@ -273,11 +279,13 @@ const searchIssues = async (req, res) => {
         like(issueTable.priority, `%${search}%`)
       );
     }
-    const issues = await db
-      .select()
-      .from(issueTable)
-      .where(whereClause)
-      .orderBy(desc(issueTable.createdAt));
+    const issues = await db.query.issueTable.findMany({
+      where: whereClause,
+      orderBy: (issueTable, { desc }) => [desc(issueTable.createdAt)],
+      with: {
+        author: true,
+      },
+    });
 
     return res.json({
       data: issues,
