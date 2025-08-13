@@ -7,6 +7,7 @@ const {
   sendOtp,
   forgotPassword,
   makeAdmin,
+  getMe,
 } = require("../controllers/auth.controller");
 const {
   registerSchema,
@@ -43,5 +44,7 @@ router.post(
   validateRequest(forgotPasswordSchema),
   forgotPassword
 );
+
+router.get("/me", authMiddleware, getMe);
 
 module.exports = router;

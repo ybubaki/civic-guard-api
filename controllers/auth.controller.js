@@ -285,6 +285,25 @@ const makeAdmin = async (req, res) => {
   }
 };
 
+const getMe = async (req, res) => {
+  try {
+    const user = await db.query.userTable.findFirst({
+      where: eq(userTable.id, req.user.id),
+    });
+    delete user.password;
+    return res.json({
+      data: user,
+      message: "User fetched successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      data: null,
+      message: "Internal server error",
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   updateUser,
@@ -293,4 +312,5 @@ module.exports = {
   sendOtp,
   forgotPassword,
   makeAdmin,
+  getMe,
 };
