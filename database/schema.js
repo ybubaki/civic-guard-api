@@ -10,6 +10,7 @@ exports.userTable = sqliteTable("users", {
   rating: integer("rating").notNull().default(0),
   role: text("role").notNull().default("user"),
   password: text("password").notNull(),
+  active: text("active").notNull().default("true"),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });

@@ -17,6 +17,7 @@ const updateSchema = z.object({
       .min(0, "Rating must be at least 0")
       .max(5, "Rating must be at most 5")
       .optional(),
+    active: z.enum(["true", "false"]).optional(),
   }),
 });
 

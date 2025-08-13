@@ -78,7 +78,7 @@ const loginUser = async (req, res) => {
       where: eq(userTable.email, email),
     });
 
-    if (!user) {
+    if (!user || user.active === "false") {
       return res.status(404).json({
         data: null,
         message: "Invalid credentials",
