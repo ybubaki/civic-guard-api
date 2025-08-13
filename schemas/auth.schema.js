@@ -5,6 +5,9 @@ const registerSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
     username: z.string().min(3, "Username must be at least 3 characters long"),
     email: z.string().email("Invalid email address"),
+    phone: z
+      .string()
+      .min(10, "Phone number must be at least 10 characters long"),
     password: z.string().min(8, "Password must be at least 8 characters long"),
   }),
 });
@@ -14,6 +17,13 @@ const updateSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
     username: z.string().min(3, "Username must be at least 3 characters long"),
     email: z.string().email("Invalid email address"),
+    phone: z
+      .string()
+      .min(10, "Phone number must be at least 10 characters long"),
+    rating: z
+      .number()
+      .min(0, "Rating must be at least 0")
+      .max(5, "Rating must be at most 5"),
   }),
 });
 

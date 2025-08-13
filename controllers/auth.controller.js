@@ -7,7 +7,7 @@ const { sendEmail } = require("../utils/email");
 
 const registerUser = async (req, res) => {
   try {
-    const { name, username, email, password } = req.body;
+    const { name, username, email, password, phone } = req.body;
 
     const hashedPassword = await argon2.hash(password);
 
@@ -15,6 +15,7 @@ const registerUser = async (req, res) => {
       name,
       username,
       email,
+      phone,
       password: hashedPassword,
     });
 
@@ -34,7 +35,7 @@ const registerUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { name, username, email } = req.body;
+    const { name, username, email, phone } = req.body;
 
     const user = await db
       .update(userTable)
@@ -42,6 +43,7 @@ const updateUser = async (req, res) => {
         name,
         username,
         email,
+        phone,
       })
       .where(eq(userTable.id, parseInt(req.user.id)))
       .returning({
@@ -49,7 +51,9 @@ const updateUser = async (req, res) => {
         name: userTable.name,
         username: userTable.username,
         role: userTable.role,
+        rating: userTable.rating,
         email: userTable.email,
+        phone: userTable.phone,
       });
 
     return res.json({
@@ -101,6 +105,8 @@ const loginUser = async (req, res) => {
           role: user.role,
           id: user.id,
           name: user.name,
+          phone: user.phone,
+          rating: user.rating,
         },
       },
       message: "User logged in successfully",

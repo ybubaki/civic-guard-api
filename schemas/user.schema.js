@@ -12,6 +12,11 @@ const updateSchema = z.object({
       .optional(),
     email: z.string().email("Invalid email address").optional(),
     role: z.enum(["user", "admin"]).optional(),
+    rating: z
+      .number()
+      .min(0, "Rating must be at least 0")
+      .max(5, "Rating must be at most 5")
+      .optional(),
   }),
 });
 
